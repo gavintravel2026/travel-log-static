@@ -1761,7 +1761,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 02:35</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 02:41</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -2622,6 +2622,40 @@
           }
         }
         // Persist migrated state immediately so refresh does not resurrect the old placement.
+        try{ persistItinerary(); }catch(_){}
+      }
+
+      // Classification migration: keep confirmed itinerary classifications even when
+      // an older Safari localStorage snapshot still contains stale event types.
+      {
+        const forcedTypes = {
+          '7:3': 'food',   // 阜杭豆漿
+          '8:4': 'spot',   // SunnyHills（微熱山丘）
+          '8:5': 'food',   // 妍・烤物（彰化）
+          '9:1': 'food',   // 台中第二市場
+          '10:9': 'food',  // スターバックス
+          '12:10': 'spot'  // 寧夏夜市散策（fallback by name below if source key differs）
+        };
+        const forcedNames = {
+          '阜杭豆漿': 'food',
+          'SunnyHills（微熱山丘）': 'spot',
+          '妍・烤物（彰化）': 'food',
+          '台中第二市場': 'food',
+          'スターバックス': 'food',
+          '寧夏夜市散策': 'spot'
+        };
+        Object.values(itineraryData).forEach(dayData => {
+          (dayData?.events || []).forEach(event => {
+            if(forcedTypes[event?._sourceKey]){
+              event.type = forcedTypes[event._sourceKey];
+              return;
+            }
+            const name = String(event?.name || '');
+            for(const [label,type] of Object.entries(forcedNames)){
+              if(name.includes(label)){ event.type = type; break; }
+            }
+          });
+        });
         try{ persistItinerary(); }catch(_){}
       }
 
