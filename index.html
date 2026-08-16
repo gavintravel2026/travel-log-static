@@ -1315,6 +1315,105 @@
       color:#9eb2a6;
       font-weight:700;
     }
+
+    /* ===== Multi-trip core ===== */
+    .trip-switch-bar{
+      margin:-6px 0 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      background:#153127;border:1px solid rgba(214,181,91,.28);
+      border-radius:16px;padding:11px 12px;
+    }
+    .trip-switch-copy{min-width:0}
+    .trip-switch-copy small{display:block;color:#9eb2a6;font-size:11px;font-weight:800;margin-bottom:2px}
+    .trip-switch-copy strong{display:block;color:#f4e8d7;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .trip-switch-btn{
+      flex:0 0 auto;border:1px solid rgba(214,181,91,.4);background:#10271f;color:#d6b55b;
+      border-radius:12px;padding:8px 11px;font-weight:900
+    }
+    .trip-picker-overlay,.trip-create-overlay{
+      position:fixed;inset:0;z-index:1400;background:rgba(0,0,0,.62);
+      display:none;align-items:flex-end;justify-content:center;
+      padding-top:env(safe-area-inset-top)
+    }
+    .trip-picker-overlay.open,.trip-create-overlay.open{display:flex}
+    .trip-picker-sheet,.trip-create-sheet{
+      width:min(680px,100%);max-height:84vh;overflow:auto;background:#10271f;
+      border-radius:24px 24px 0 0;
+      padding:16px 14px calc(20px + env(safe-area-inset-bottom));
+      box-sizing:border-box
+    }
+    .trip-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .trip-sheet-head h2{margin:0;font-size:22px}
+    .trip-sheet-close{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:#193429;color:#fff;font-size:21px}
+    .trip-list{display:grid;gap:10px}
+    .trip-list-item{
+      width:100%;text-align:left;border:1px solid rgba(255,255,255,.09);
+      background:#153127;color:#f4e8d7;border-radius:16px;padding:13px 14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px
+    }
+    .trip-list-item.active{border-color:#d6b55b}
+    .trip-list-main strong{display:block;font-size:16px;margin-bottom:3px}
+    .trip-list-main span{display:block;font-size:12px;color:#aebcb4}
+    .trip-current-chip{font-size:10px;font-weight:950;color:#102018;background:#d6b55b;border-radius:999px;padding:5px 7px}
+    .trip-new-btn{
+      width:100%;margin-top:13px;border:0;background:#d6b55b;color:#102018;
+      border-radius:15px;padding:13px;font-weight:950;font-size:15px
+    }
+    .trip-form label{display:block;margin-bottom:13px}
+    .trip-form label span{display:block;font-size:12px;font-weight:900;color:#cbbfac;margin-bottom:5px}
+    .trip-form input{
+      width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.12);
+      background:#153127;color:#fff;border-radius:12px;padding:11px 12px;font-size:16px
+    }
+    .trip-form-actions{display:grid;grid-template-columns:1fr 1.3fr;gap:9px;margin-top:15px}
+    .trip-form-actions button{border-radius:13px;padding:12px;border:1px solid rgba(255,255,255,.12);background:#193429;color:#fff;font-weight:900}
+    .trip-form-actions .primary{background:#d6b55b;color:#102018;border-color:transparent}
+    .generic-trip-shell{display:none}
+    body.generic-trip-mode #home > :not(.generic-trip-shell),
+    body.generic-trip-mode #itinerary > :not(.generic-trip-shell),
+    body.generic-trip-mode #gourmet > :not(.generic-trip-shell),
+    body.generic-trip-mode #map > :not(.generic-trip-shell),
+    body.generic-trip-mode #photos > :not(.generic-trip-shell),
+    body.generic-trip-mode #concierge > :not(.generic-trip-shell){display:none!important}
+    body.generic-trip-mode .generic-trip-shell{display:block}
+    .generic-hero{
+      background:linear-gradient(145deg,#153127,#10271f);
+      border:1px solid rgba(214,181,91,.24);border-radius:20px;padding:18px;margin-bottom:16px
+    }
+    .generic-hero .eyebrow{margin-bottom:5px}
+    .generic-hero h1{font-size:29px;margin:0 0 7px}
+    .generic-hero p{margin:0;color:#aebcb4;line-height:1.5}
+    .generic-card{background:#153127;border:1px solid rgba(255,255,255,.08);border-radius:17px;padding:14px;margin-bottom:11px}
+    .generic-card h3{margin:0 0 6px;font-size:17px}
+    .generic-card p{margin:0;color:#aebcb4;font-size:13px;line-height:1.5}
+    .generic-empty{padding:28px 16px;text-align:center;color:#aebcb4}
+    .generic-primary{
+      width:100%;border:0;border-radius:14px;background:#d6b55b;color:#102018;
+      padding:12px 14px;font-weight:950;margin-top:12px
+    }
+    .generic-secondary{
+      width:100%;border:1px solid rgba(214,181,91,.35);border-radius:14px;background:#153127;color:#d6b55b;
+      padding:11px 14px;font-weight:900;margin-top:9px
+    }
+    .generic-day-strip{display:flex;gap:8px;overflow:auto;padding:3px 0 10px;scrollbar-width:none}
+    .generic-day-btn{border:1px solid rgba(255,255,255,.09);background:#153127;color:#fff;border-radius:13px;padding:8px 11px;white-space:nowrap;font-weight:850}
+    .generic-day-btn.active{background:#d6b55b;color:#102018;border-color:#d6b55b}
+    .generic-event-row,.generic-food-row{
+      background:#153127;border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:12px;margin-bottom:9px
+    }
+    .generic-event-time{color:#d6b55b;font-size:12px;font-weight:950;margin-bottom:3px}
+    .generic-row-title{font-size:16px;font-weight:900;margin-bottom:3px}
+    .generic-row-note{font-size:12px;color:#aebcb4;line-height:1.45}
+    .generic-inline-form{background:#10271f;border:1px solid rgba(214,181,91,.25);border-radius:16px;padding:12px;margin:10px 0}
+    .generic-inline-form input,.generic-inline-form textarea{
+      width:100%;box-sizing:border-box;margin:0 0 8px;border:1px solid rgba(255,255,255,.11);
+      background:#153127;color:#fff;border-radius:11px;padding:10px;font-size:15px
+    }
+    .generic-inline-form textarea{min-height:70px;resize:vertical}
+    .generic-inline-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .generic-inline-actions button{border-radius:11px;padding:10px;border:1px solid rgba(255,255,255,.12);background:#193429;color:#fff;font-weight:850}
+    .generic-inline-actions .primary{background:#d6b55b;color:#102018;border-color:transparent}
+
 </style>
 </head>
 <body>
@@ -1324,7 +1423,16 @@
       <button type="button" class="avatar avatar-button" id="openMyPage" aria-label="マイページを開く">G</button>
     </header>
 
+    <div class="trip-switch-bar" id="tripSwitchBar">
+      <div class="trip-switch-copy">
+        <small>現在の旅行</small>
+        <strong id="tripSwitchName">台湾2026</strong>
+      </div>
+      <button type="button" class="trip-switch-btn" id="openTripPicker">切り替え</button>
+    </div>
+
     <section class="screen active" id="home">
+      <div class="generic-trip-shell" id="generic-home"></div>
       <p class="eyebrow" id="homeDateLabel">2026年8月7日（金）・台北</p>
       <h1 id="homeGreeting">おはようございます</h1>
       <p class="sub" id="homeMessage">今日も、おいしい台湾を楽しみましょう。</p>
@@ -1403,6 +1511,7 @@
     </section>
 
     <section class="screen" id="itinerary">
+      <div class="generic-trip-shell" id="generic-itinerary"></div>
       <p class="eyebrow">台湾2026</p>
       <h1 class="page-title">旅程</h1>
       <p class="sub">8月7日（金）・台北 → 台中</p>
@@ -1425,6 +1534,7 @@
 
 
     <section class="screen" id="gourmet">
+      <div class="generic-trip-shell" id="generic-gourmet"></div>
       <p class="eyebrow">台湾2026 グルメブック</p>
       <h1 class="page-title">グルメ</h1>
       <p class="sub">登録済みのお店から探せます。</p>
@@ -1457,6 +1567,7 @@
     </section>
 
     <section class="screen" id="map">
+      <div class="generic-trip-shell" id="generic-map"></div>
       <p class="eyebrow">台湾2026</p>
       <h1 class="page-title">地図</h1>
       <p class="sub" id="mapSubtitle">選択日の目的地</p>
@@ -1470,6 +1581,7 @@
       <div class="map-list" id="mapList"></div>
     </section>
     <section class="screen" id="concierge">
+      <div class="generic-trip-shell" id="generic-concierge"></div>
       <p class="eyebrow">台湾2026</p>
       <h1 class="page-title">Travel Concierge</h1>
       <p class="sub" id="conciergeDayLabel">選択中の日程を参照して回答します。</p>
@@ -1509,6 +1621,7 @@
   
 
     <section class="screen" id="photos">
+      <div class="generic-trip-shell" id="generic-photos"></div>
     <div class="photo-page">
       <div class="photo-page-head">
         <div>
@@ -1632,7 +1745,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/15 16:16</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/16 01:33</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -1659,6 +1772,37 @@
     </div>
   </div>
 
+
+
+  <div class="trip-picker-overlay" id="tripPicker" aria-hidden="true">
+    <div class="trip-picker-sheet">
+      <div class="trip-sheet-head">
+        <h2>旅行を選ぶ</h2>
+        <button type="button" class="trip-sheet-close" id="closeTripPicker">×</button>
+      </div>
+      <div class="trip-list" id="tripList"></div>
+      <button type="button" class="trip-new-btn" id="openTripCreate">＋ 新しい旅を作る</button>
+    </div>
+  </div>
+
+  <div class="trip-create-overlay" id="tripCreate" aria-hidden="true">
+    <div class="trip-create-sheet">
+      <div class="trip-sheet-head">
+        <h2>新しい旅を作る</h2>
+        <button type="button" class="trip-sheet-close" id="closeTripCreate">×</button>
+      </div>
+      <form class="trip-form" id="tripCreateForm">
+        <label><span>旅行名</span><input id="tripCreateName" required placeholder="例：北海道2027"></label>
+        <label><span>行き先</span><input id="tripCreateDestination" required placeholder="例：札幌・小樽"></label>
+        <label><span>出発日</span><input id="tripCreateStart" type="date" required></label>
+        <label><span>帰着日</span><input id="tripCreateEnd" type="date" required></label>
+        <div class="trip-form-actions">
+          <button type="button" id="tripCreateCancel">キャンセル</button>
+          <button type="submit" class="primary">この旅を作る</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div class="modal" id="itineraryModal" aria-hidden="true">
     <div class="modal-sheet">
@@ -6521,6 +6665,385 @@ document.addEventListener('click', event => {
     document.getElementById('restoreStatusBox')?.style.setProperty('display','none');
     const photoInput=document.getElementById('photoAddInput');
     if(photoInput) photoInput.disabled=true;
+
+
+    /* ===== Multi-trip core ===== */
+    const TL_TRIPS_KEY='travelLogTripsV1';
+    const TL_ACTIVE_TRIP_KEY='travelLogActiveTripV1';
+    const TL_TRIP_DATA_PREFIX='travelLogTripDataV1:';
+    const TL_TAIWAN_ID='taiwan-2026';
+
+    function tlDefaultTrips(){
+      return [{
+        id:TL_TAIWAN_ID,
+        name:'台湾2026',
+        destination:'台湾',
+        startDate:'2026-08-06',
+        endDate:'2026-08-13',
+        kind:'legacy'
+      }];
+    }
+
+    function tlLoadTrips(){
+      try{
+        const parsed=JSON.parse(localStorage.getItem(TL_TRIPS_KEY)||'null');
+        if(Array.isArray(parsed) && parsed.length){
+          if(!parsed.some(t=>t.id===TL_TAIWAN_ID)) parsed.unshift(tlDefaultTrips()[0]);
+          return parsed;
+        }
+      }catch(_){}
+      const initial=tlDefaultTrips();
+      localStorage.setItem(TL_TRIPS_KEY,JSON.stringify(initial));
+      return initial;
+    }
+
+    function tlSaveTrips(trips){
+      localStorage.setItem(TL_TRIPS_KEY,JSON.stringify(trips));
+    }
+
+    function tlActiveTripId(){
+      const id=localStorage.getItem(TL_ACTIVE_TRIP_KEY)||TL_TAIWAN_ID;
+      return tlLoadTrips().some(t=>t.id===id) ? id : TL_TAIWAN_ID;
+    }
+
+    function tlActiveTrip(){
+      const id=tlActiveTripId();
+      return tlLoadTrips().find(t=>t.id===id) || tlDefaultTrips()[0];
+    }
+
+    function tlTripDataKey(id){ return TL_TRIP_DATA_PREFIX+id; }
+
+    function tlLoadTripData(id){
+      try{
+        const data=JSON.parse(localStorage.getItem(tlTripDataKey(id))||'null');
+        if(data && typeof data==='object') return data;
+      }catch(_){}
+      return {events:{},foods:[],createdAt:new Date().toISOString()};
+    }
+
+    function tlSaveTripData(id,data){
+      localStorage.setItem(tlTripDataKey(id),JSON.stringify(data));
+      try{markDataUpdated();}catch(_){}
+    }
+
+    function tlDateLabel(iso){
+      if(!iso) return '';
+      const d=new Date(iso+'T00:00:00');
+      if(Number.isNaN(d.getTime())) return iso;
+      return `${d.getMonth()+1}/${d.getDate()}`;
+    }
+
+    function tlDateRange(start,end){
+      const rows=[];
+      const s=new Date(start+'T00:00:00'), e=new Date(end+'T00:00:00');
+      if(Number.isNaN(s.getTime())||Number.isNaN(e.getTime())) return rows;
+      for(let d=new Date(s);d<=e && rows.length<60;d.setDate(d.getDate()+1)){
+        rows.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
+      }
+      return rows;
+    }
+
+    function tlSetActiveTrip(id){
+      localStorage.setItem(TL_ACTIVE_TRIP_KEY,id);
+      location.reload();
+    }
+
+    function tlOpenPicker(){
+      tlRenderTripList();
+      document.getElementById('tripPicker')?.classList.add('open');
+      document.getElementById('tripPicker')?.setAttribute('aria-hidden','false');
+    }
+
+    function tlClosePicker(){
+      document.getElementById('tripPicker')?.classList.remove('open');
+      document.getElementById('tripPicker')?.setAttribute('aria-hidden','true');
+    }
+
+    function tlOpenCreate(){
+      tlClosePicker();
+      const form=document.getElementById('tripCreateForm');
+      form?.reset();
+      document.getElementById('tripCreate')?.classList.add('open');
+      document.getElementById('tripCreate')?.setAttribute('aria-hidden','false');
+    }
+
+    function tlCloseCreate(){
+      document.getElementById('tripCreate')?.classList.remove('open');
+      document.getElementById('tripCreate')?.setAttribute('aria-hidden','true');
+    }
+
+    function tlRenderTripList(){
+      const holder=document.getElementById('tripList');
+      if(!holder) return;
+      const active=tlActiveTripId();
+      holder.innerHTML=tlLoadTrips().map(t=>`
+        <button type="button" class="trip-list-item ${t.id===active?'active':''}" data-trip-id="${t.id}">
+          <span class="trip-list-main">
+            <strong>${tlEscape(t.name)}</strong>
+            <span>${tlEscape(t.destination)} ・ ${tlDateLabel(t.startDate)}〜${tlDateLabel(t.endDate)}</span>
+          </span>
+          ${t.id===active?'<span class="trip-current-chip">現在</span>':'<span>›</span>'}
+        </button>
+      `).join('');
+      holder.querySelectorAll('[data-trip-id]').forEach(btn=>{
+        btn.addEventListener('click',()=>tlSetActiveTrip(btn.dataset.tripId));
+      });
+    }
+
+    function tlEscape(value){
+      return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    }
+
+    function tlGenericNav(screen){
+      document.querySelector(`.tab[data-screen="${screen}"]`)?.click();
+    }
+
+    let tlGenericSelectedDate='';
+
+    function tlRenderGenericTrip(){
+      const trip=tlActiveTrip();
+      if(trip.id===TL_TAIWAN_ID){
+        document.body.classList.remove('generic-trip-mode');
+        const name=document.getElementById('tripSwitchName');
+        if(name) name.textContent='台湾2026';
+        return;
+      }
+
+      document.body.classList.add('generic-trip-mode');
+      const name=document.getElementById('tripSwitchName');
+      if(name) name.textContent=trip.name;
+
+      const dates=tlDateRange(trip.startDate,trip.endDate);
+      if(!tlGenericSelectedDate || !dates.includes(tlGenericSelectedDate)) tlGenericSelectedDate=dates[0]||trip.startDate;
+      const data=tlLoadTripData(trip.id);
+      const totalEvents=Object.values(data.events||{}).reduce((n,rows)=>n+(Array.isArray(rows)?rows.length:0),0);
+
+      const home=document.getElementById('generic-home');
+      if(home) home.innerHTML=`
+        <div class="generic-hero">
+          <p class="eyebrow">現在の旅行</p>
+          <h1>${tlEscape(trip.name)}</h1>
+          <p>${tlEscape(trip.destination)}<br>${tlDateLabel(trip.startDate)}〜${tlDateLabel(trip.endDate)} ・ ${dates.length}日間</p>
+        </div>
+        <div class="generic-card">
+          <h3>旅程</h3>
+          <p>${totalEvents ? `${totalEvents}件の予定を登録済み` : 'まだ予定はありません。'}</p>
+          <button class="generic-primary" type="button" data-generic-nav="itinerary">${totalEvents?'旅程を見る':'最初の予定を作る'}</button>
+        </div>
+        <div class="generic-card">
+          <h3>グルメ</h3>
+          <p>${(data.foods||[]).length ? `${data.foods.length}店を登録済み` : '行きたい店をこの旅行だけに登録できます。'}</p>
+          <button class="generic-secondary" type="button" data-generic-nav="gourmet">グルメを見る</button>
+        </div>
+        <div class="generic-card">
+          <h3>写真</h3>
+          <p>この旅行の写真はまだ登録されていません。</p>
+        </div>
+      `;
+
+      tlRenderGenericItinerary(trip,data,dates);
+      tlRenderGenericGourmet(trip,data);
+      tlRenderGenericMap(trip,data,dates);
+
+      const photos=document.getElementById('generic-photos');
+      if(photos) photos.innerHTML=`
+        <div class="generic-hero"><p class="eyebrow">${tlEscape(trip.name)}</p><h1>旅の写真</h1><p>${tlEscape(trip.destination)}</p></div>
+        <div class="generic-empty">この旅行の写真はまだありません。<br>写真保存はSafari容量を増やさない方式で追加します。</div>
+      `;
+
+      const concierge=document.getElementById('generic-concierge');
+      if(concierge) concierge.innerHTML=`
+        <div class="generic-hero"><p class="eyebrow">${tlEscape(trip.name)}</p><h1>Travel Concierge</h1><p>旅行中コンシェルジュは品質改善まで保留中です。</p></div>
+        <div class="generic-card"><h3>現在は使用しません</h3><p>旅程・交通・営業時間などを十分に確認できる仕組みを整えてから再実装します。</p></div>
+      `;
+
+      document.querySelectorAll('[data-generic-nav]').forEach(btn=>{
+        btn.onclick=()=>tlGenericNav(btn.dataset.genericNav);
+      });
+    }
+
+    function tlRenderGenericItinerary(trip,data,dates){
+      const holder=document.getElementById('generic-itinerary');
+      if(!holder) return;
+      const selected=tlGenericSelectedDate;
+      const events=(data.events?.[selected]||[]);
+      holder.innerHTML=`
+        <div class="generic-hero"><p class="eyebrow">${tlEscape(trip.name)}</p><h1>旅程</h1><p>${tlEscape(trip.destination)}</p></div>
+        <div class="generic-day-strip">
+          ${dates.map((d,i)=>`<button type="button" class="generic-day-btn ${d===selected?'active':''}" data-generic-date="${d}">${i+1}日目<br>${tlDateLabel(d)}</button>`).join('')}
+        </div>
+        <div id="genericEventList">
+          ${events.length?events.map((e,i)=>`
+            <div class="generic-event-row">
+              <div class="generic-event-time">${tlEscape(e.time||'時間未定')}</div>
+              <div class="generic-row-title">${tlEscape(e.name)}</div>
+              ${e.note?`<div class="generic-row-note">${tlEscape(e.note)}</div>`:''}
+              ${e.map?`<a class="generic-secondary" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box" target="_blank" rel="noopener" href="${tlEscape(e.map)}">Googleマップ</a>`:''}
+              <button class="generic-secondary" type="button" data-delete-event="${i}">この予定を削除</button>
+            </div>`).join(''):'<div class="generic-empty">この日の予定はまだありません。</div>'}
+        </div>
+        <button class="generic-primary" type="button" id="genericAddEventOpen">＋ 予定を追加</button>
+        <div class="generic-inline-form" id="genericAddEventForm" hidden>
+          <input id="genericEventTime" type="time" aria-label="時刻">
+          <input id="genericEventName" placeholder="予定名" aria-label="予定名">
+          <textarea id="genericEventNote" placeholder="メモ" aria-label="メモ"></textarea>
+          <input id="genericEventMap" placeholder="GoogleマップURL（任意）" aria-label="GoogleマップURL">
+          <div class="generic-inline-actions">
+            <button type="button" id="genericEventCancel">キャンセル</button>
+            <button type="button" class="primary" id="genericEventSave">保存</button>
+          </div>
+        </div>
+      `;
+      holder.querySelectorAll('[data-generic-date]').forEach(btn=>{
+        btn.onclick=()=>{
+          tlGenericSelectedDate=btn.dataset.genericDate;
+          tlRenderGenericItinerary(trip,tlLoadTripData(trip.id),dates);
+        };
+      });
+      holder.querySelector('#genericAddEventOpen')?.addEventListener('click',()=>{
+        holder.querySelector('#genericAddEventForm').hidden=false;
+        holder.querySelector('#genericEventName')?.focus();
+      });
+      holder.querySelector('#genericEventCancel')?.addEventListener('click',()=>{
+        holder.querySelector('#genericAddEventForm').hidden=true;
+      });
+      holder.querySelector('#genericEventSave')?.addEventListener('click',()=>{
+        const name=holder.querySelector('#genericEventName')?.value.trim();
+        if(!name){ alert('予定名を入力してください。'); return; }
+        const fresh=tlLoadTripData(trip.id);
+        fresh.events=fresh.events||{};
+        fresh.events[selected]=fresh.events[selected]||[];
+        fresh.events[selected].push({
+          time:holder.querySelector('#genericEventTime')?.value||'',
+          name,
+          note:holder.querySelector('#genericEventNote')?.value.trim()||'',
+          map:holder.querySelector('#genericEventMap')?.value.trim()||''
+        });
+        fresh.events[selected].sort((a,b)=>String(a.time||'99:99').localeCompare(String(b.time||'99:99')));
+        tlSaveTripData(trip.id,fresh);
+        tlRenderGenericTrip();
+      });
+      holder.querySelectorAll('[data-delete-event]').forEach(btn=>{
+        btn.onclick=()=>{
+          const idx=Number(btn.dataset.deleteEvent);
+          const fresh=tlLoadTripData(trip.id);
+          fresh.events?.[selected]?.splice(idx,1);
+          tlSaveTripData(trip.id,fresh);
+          tlRenderGenericTrip();
+        };
+      });
+    }
+
+    function tlRenderGenericGourmet(trip,data){
+      const holder=document.getElementById('generic-gourmet');
+      if(!holder) return;
+      const foods=Array.isArray(data.foods)?data.foods:[];
+      holder.innerHTML=`
+        <div class="generic-hero"><p class="eyebrow">${tlEscape(trip.name)}</p><h1>グルメ</h1><p>${tlEscape(trip.destination)}</p></div>
+        <div id="genericFoodList">
+          ${foods.length?foods.map((f,i)=>`
+            <div class="generic-food-row">
+              <div class="generic-row-title">${tlEscape(f.name)}</div>
+              <div class="generic-row-note">${tlEscape([f.area,f.note].filter(Boolean).join(' ・ '))}</div>
+              ${f.map?`<a class="generic-secondary" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box" target="_blank" rel="noopener" href="${tlEscape(f.map)}">Googleマップ</a>`:''}
+              <button class="generic-secondary" type="button" data-delete-food="${i}">この店を削除</button>
+            </div>`).join(''):'<div class="generic-empty">登録したお店はまだありません。</div>'}
+        </div>
+        <button class="generic-primary" type="button" id="genericAddFoodOpen">＋ お店を追加</button>
+        <div class="generic-inline-form" id="genericAddFoodForm" hidden>
+          <input id="genericFoodName" placeholder="店名">
+          <input id="genericFoodArea" placeholder="エリア・最寄駅">
+          <textarea id="genericFoodNote" placeholder="食べたいもの・メモ"></textarea>
+          <input id="genericFoodMap" placeholder="GoogleマップURL（任意）">
+          <div class="generic-inline-actions">
+            <button type="button" id="genericFoodCancel">キャンセル</button>
+            <button type="button" class="primary" id="genericFoodSave">保存</button>
+          </div>
+        </div>
+      `;
+      holder.querySelector('#genericAddFoodOpen')?.addEventListener('click',()=>{
+        holder.querySelector('#genericAddFoodForm').hidden=false;
+        holder.querySelector('#genericFoodName')?.focus();
+      });
+      holder.querySelector('#genericFoodCancel')?.addEventListener('click',()=>holder.querySelector('#genericAddFoodForm').hidden=true);
+      holder.querySelector('#genericFoodSave')?.addEventListener('click',()=>{
+        const name=holder.querySelector('#genericFoodName')?.value.trim();
+        if(!name){alert('店名を入力してください。');return;}
+        const fresh=tlLoadTripData(trip.id);
+        fresh.foods=Array.isArray(fresh.foods)?fresh.foods:[];
+        fresh.foods.push({
+          name,
+          area:holder.querySelector('#genericFoodArea')?.value.trim()||'',
+          note:holder.querySelector('#genericFoodNote')?.value.trim()||'',
+          map:holder.querySelector('#genericFoodMap')?.value.trim()||''
+        });
+        tlSaveTripData(trip.id,fresh);
+        tlRenderGenericTrip();
+      });
+      holder.querySelectorAll('[data-delete-food]').forEach(btn=>{
+        btn.onclick=()=>{
+          const fresh=tlLoadTripData(trip.id);
+          fresh.foods?.splice(Number(btn.dataset.deleteFood),1);
+          tlSaveTripData(trip.id,fresh);
+          tlRenderGenericTrip();
+        };
+      });
+    }
+
+    function tlRenderGenericMap(trip,data,dates){
+      const holder=document.getElementById('generic-map');
+      if(!holder) return;
+      const rows=[];
+      dates.forEach(d=>(data.events?.[d]||[]).forEach(e=>{if(e.map) rows.push({label:`${tlDateLabel(d)} ${e.time||''}`,name:e.name,map:e.map});}));
+      (data.foods||[]).forEach(f=>{if(f.map) rows.push({label:f.area||'グルメ',name:f.name,map:f.map});});
+      holder.innerHTML=`
+        <div class="generic-hero"><p class="eyebrow">${tlEscape(trip.name)}</p><h1>地図</h1><p>登録したGoogleマップリンク</p></div>
+        ${rows.length?rows.map(r=>`
+          <div class="generic-card">
+            <p>${tlEscape(r.label)}</p><h3>${tlEscape(r.name)}</h3>
+            <a class="generic-primary" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box" target="_blank" rel="noopener" href="${tlEscape(r.map)}">Googleマップで開く</a>
+          </div>`).join(''):'<div class="generic-empty">地図リンクはまだ登録されていません。</div>'}
+      `;
+    }
+
+    document.getElementById('openTripPicker')?.addEventListener('click',tlOpenPicker);
+    document.getElementById('closeTripPicker')?.addEventListener('click',tlClosePicker);
+    document.getElementById('tripPicker')?.addEventListener('click',e=>{if(e.target.id==='tripPicker')tlClosePicker();});
+    document.getElementById('openTripCreate')?.addEventListener('click',tlOpenCreate);
+    document.getElementById('closeTripCreate')?.addEventListener('click',tlCloseCreate);
+    document.getElementById('tripCreateCancel')?.addEventListener('click',tlCloseCreate);
+    document.getElementById('tripCreate')?.addEventListener('click',e=>{if(e.target.id==='tripCreate')tlCloseCreate();});
+
+    document.getElementById('tripCreateForm')?.addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('tripCreateName')?.value.trim();
+      const destination=document.getElementById('tripCreateDestination')?.value.trim();
+      const startDate=document.getElementById('tripCreateStart')?.value;
+      const endDate=document.getElementById('tripCreateEnd')?.value;
+      if(!name||!destination||!startDate||!endDate) return;
+      if(endDate<startDate){alert('帰着日は出発日以降にしてください。');return;}
+      const id='trip-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7);
+      const trips=tlLoadTrips();
+      trips.push({id,name,destination,startDate,endDate,kind:'standard'});
+      tlSaveTrips(trips);
+      tlSaveTripData(id,{events:{},foods:[],createdAt:new Date().toISOString()});
+      localStorage.setItem(TL_ACTIVE_TRIP_KEY,id);
+      location.reload();
+    });
+
+    // My Page "旅行" opens the trip switcher, before the legacy click handler can navigate.
+    document.getElementById('myPageTravel')?.addEventListener('click',e=>{
+      e.preventDefault();e.stopImmediatePropagation();
+      document.getElementById('myPage')?.classList.remove('open');
+      document.getElementById('myPage')?.setAttribute('aria-hidden','true');
+      tlOpenPicker();
+    },true);
+
+    // Current trip label and mode
+    const __tlTrip=tlActiveTrip();
+    const __tlTripName=document.getElementById('tripSwitchName');
+    if(__tlTripName) __tlTripName.textContent=__tlTrip.name;
+    tlRenderGenericTrip();
 
     refreshPhotoAlbum();
 
