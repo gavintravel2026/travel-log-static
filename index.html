@@ -1761,7 +1761,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 02:09</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 02:20</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -3130,7 +3130,7 @@ function renderMap(day){
       let title = String(event?.name || '').trim();
 
       title = title.split('：')[0].trim();
-      title = title.replace(/（T\d{4}）/g,'').trim();
+      title = title.replace(/（T\d{3,4}）/g,'').trim();
 
       // 便名・列車名は詳細へ。旅程カードは移動区間だけを表示。
       title = title
@@ -3208,7 +3208,7 @@ function renderItinerary(day) {
               <div class="event-options">
                 ${event.options.map((option,optionIndex) => `
                   <div class="event-option">
-                    <div class="event-option-name">${escapeHtml(option.name)}</div>
+                    <div class="event-option-name">${escapeHtml(itineraryCardTitle(option))}</div>
                     <div class="event-option-actions">
                       <a class="small-btn primary" target="_blank" rel="noopener"
                          href="${escapeHtml(option.map)}">Googleマップ</a>
