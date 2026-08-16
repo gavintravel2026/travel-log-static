@@ -1745,7 +1745,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 00:32</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 00:39</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -5296,7 +5296,7 @@ document.addEventListener('click', event => {
         const record={
           id:`p-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
           day,
-          eventKey:`${day}-${eventIndex}`,
+          eventKey:stablePhotoEventKey(day,eventIndex),
           eventName:itineraryCardTitle(event),
           title:itineraryCardTitle(event),
           note:'',
@@ -5737,12 +5737,19 @@ document.addEventListener('click', event => {
         console.warn('写真データを読み込めませんでした',error);
       }
     }
+    function stablePhotoEventKey(day,eventIndex){
+      const event=itineraryData[String(day)]?.events?.[Number(eventIndex)] || null;
+      const sourceKey=String(event?._sourceKey || '');
+      if(/^\d+:\d+$/.test(sourceKey)) return sourceKey.replace(':','-');
+      return `${day}-${eventIndex}`;
+    }
     function eventRepresentativePhoto(day,eventIndex){
+      const key=stablePhotoEventKey(day,eventIndex);
       const photos = Array.isArray(window.personalPhotos) ? window.personalPhotos : [];
-      return photos.find(p=>p.eventKey===`${day}-${eventIndex}`) || null;
+      return photos.find(p=>p.eventKey===key) || null;
     }
     function eventPhotos(day,eventIndex){
-      const key=`${day}-${eventIndex}`;
+      const key=stablePhotoEventKey(day,eventIndex);
       const photos=Array.isArray(window.personalPhotos) ? window.personalPhotos : [];
       return photos.filter(p=>p.eventKey===key);
     }
@@ -6287,7 +6294,7 @@ document.addEventListener('click', event => {
       const validEvents=new Map();
       Object.entries(itineraryData).forEach(([day,data])=>{
         (data?.events || []).forEach((event,index)=>{
-          validEvents.set(`${day}-${index}`,{label:`8/${day} ${event.time || ''} ${itineraryCardTitle(event)}`.trim()});
+          validEvents.set(stablePhotoEventKey(day,index),{label:`8/${day} ${event.time || ''} ${itineraryCardTitle(event)}`.trim()});
         });
       });
       const linked=[],unlinked=[],broken=[],groups=new Map();
