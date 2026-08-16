@@ -1761,7 +1761,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 02:20</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 02:27</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -3007,7 +3007,7 @@
     function cleanEventPlaceName(name){
       return String(name || '')
         .split('：')[0]
-        .replace(/（T\d{4}）/g,'')
+        .replace(/（T\d{3,4}）/g,'')
         .replace(/(到着|出発|帰着|チェックイン|チェックアウト|を出る|で休憩).*$/,'')
         .trim();
     }
@@ -3507,7 +3507,9 @@ function renderItinerary(day) {
       const event = isEdit ? events[index] : {time:'',name:'',meta:''};
 
       managerTime.value = event.time || '';
-      managerName.value = event.name || '';
+      // 編集画面の予定名は、旅程カードと同じ表示名に統一する。
+      // 元データの詳細（T番号・料理内容等）は、名称を実際に変更しない限り保持する。
+      managerName.value = isEdit ? itineraryCardTitle(event) : '';
       managerMeta.value = event.meta || '';
 
       managerList.classList.add('hidden');
@@ -3533,7 +3535,7 @@ function renderItinerary(day) {
         <div class="manager-item" data-manager-index="${index}">
           <div class="manager-time">${escapeHtml(event.time || '未定')}</div>
           <div>
-            <div class="manager-name">${escapeHtml(event.name || '名称未設定')}</div>
+            <div class="manager-name">${escapeHtml(itineraryCardTitle(event) || '名称未設定')}</div>
             <div class="manager-meta">${escapeHtml(event.meta || '')}</div>
           </div>
           <div class="manager-actions">
@@ -4364,11 +4366,13 @@ function renderItinerary(day) {
 
       if(managerMode === 'edit' && managerEditingIndex >= 0 && dayData.events[managerEditingIndex]){
         const target = dayData.events[managerEditingIndex];
-        const previousName = String(target.name || '').trim();
-        const nameChanged = name !== previousName;
+        const previousDisplayName = itineraryCardTitle(target).trim();
+        const nameChanged = name !== previousDisplayName;
 
         target.time = time;
-        target.name = name;
+        // 表示名を変更していない場合は、元のnameに含まれる料理詳細等を保持する。
+        // 実際に予定名を書き換えた場合のみname自体を更新する。
+        if(nameChanged) target.name = name;
         target.meta = meta;
         target.note = meta;
 
