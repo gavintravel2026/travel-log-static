@@ -558,6 +558,22 @@
     .food-card.compact .tag-row{
       margin-bottom:9px;
     }
+    .food-visited-toggle{
+      width:100%;
+      min-height:44px;
+      margin:2px 0 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:#13291f;
+      color:#aab8b0;
+      font-size:14px;
+      font-weight:900;
+    }
+    .food-visited-toggle.visited{
+      background:rgba(241,195,108,.14);
+      color:var(--gold);
+      border-color:rgba(241,195,108,.34);
+    }
 
     .food-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .food-actions .small-btn{min-height:52px}
@@ -1745,7 +1761,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 00:39</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/17 01:11</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -2171,7 +2187,9 @@
           const isToday = [...dayNames].some(name =>
             name.includes(plainName) || plainName.includes(name)
           );
-          const tags = [...item.tags];
+          const visited = isGourmetVisited(item);
+          const tags = (item.tags || []).filter(tag => tag !== '訪問済み');
+          if(visited) tags.unshift('訪問済み');
           if(isToday && !tags.includes('選択日の旅程')) tags.unshift('選択日の旅程');
           const visibleTags = tags.slice(0,3);
           const map = item.map || mapSearchUrl(item.name);
@@ -2210,6 +2228,12 @@
                   <span>${escapeHtml((item.tags || [item.region])[0] || item.region)}</span>
                   <span class="food-budget">${escapeHtml(budgetText)}</span>
                 </div>
+                <button class="food-visited-toggle ${visited ? 'visited' : ''}"
+                  type="button"
+                  data-food-id="${escapeHtml(item.id)}"
+                  aria-pressed="${visited ? 'true' : 'false'}">
+                  ${visited ? '✓ 訪問済み' : '○ 未訪問'}
+                </button>
                 <div class="food-actions">
                   <a class="small-btn primary" target="_blank" rel="noopener"
                     href="${escapeHtml(map)}">Googleマップ</a>
@@ -2252,6 +2276,17 @@
     }
 
     function bindGourmetCardActions(){
+      document.querySelectorAll('.food-visited-toggle').forEach(button => {
+        button.addEventListener('click', event => {
+          event.stopPropagation();
+          const foodId=button.dataset.foodId || '';
+          const item=gourmetData.find(x=>x.id===foodId);
+          if(!item) return;
+          setGourmetVisited(foodId,!isGourmetVisited(item));
+          renderGourmetCards();
+        });
+      });
+
       document.querySelectorAll('.favorite-btn').forEach(button => {
         button.addEventListener('click', event => {
           event.stopPropagation();
@@ -2629,6 +2664,39 @@
     }
 
     applyGourmetActualOverrides();
+
+    const gourmetVisitedOverrideKey = 'gavinGourmetVisitedOverridesV1';
+
+    function readGourmetVisitedOverrides(){
+      try{
+        const raw=JSON.parse(localStorage.getItem(gourmetVisitedOverrideKey) || '{}');
+        return raw && typeof raw==='object' ? raw : {};
+      }catch(_){
+        return {};
+      }
+    }
+
+    function defaultGourmetVisited(item){
+      return Boolean(
+        String(item?.actual_visit || '').trim() ||
+        (Array.isArray(item?.tags) && item.tags.includes('訪問済み'))
+      );
+    }
+
+    function isGourmetVisited(item){
+      const overrides=readGourmetVisitedOverrides();
+      if(Object.prototype.hasOwnProperty.call(overrides,item.id)){
+        return overrides[item.id] === true;
+      }
+      return defaultGourmetVisited(item);
+    }
+
+    function setGourmetVisited(id,visited){
+      const overrides=readGourmetVisitedOverrides();
+      overrides[id]=Boolean(visited);
+      localStorage.setItem(gourmetVisitedOverrideKey,JSON.stringify(overrides));
+      try{markDataUpdated();}catch(_){}
+    }
 
 
     const gourmetPhotos = {"小籠包・蒸餃": "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=82", "小籠包": "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=82", "牛肉麵": "https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=1000&q=82", "豆花": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1000&q=82", "海鮮": "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1000&q=82", "朝食": "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?auto=format&fit=crop&w=1000&q=82", "豆漿・朝食": "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?auto=format&fit=crop&w=1000&q=82", "台湾料理・台菜": "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1000&q=82", "台湾料理": "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1000&q=82", "江浙料理": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=82", "焼き物": "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1000&q=82"};
