@@ -1788,7 +1788,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 22:43</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 23:07</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -3384,7 +3384,12 @@ function renderItinerary(day) {
                 ` : ''}
                 <button class="small-btn itinerary-detail-btn"
                   data-name="${escapeHtml(event.name)}"
-                  data-number="${escapeHtml(event.number)}"
+                  data-number="${escapeHtml(
+                    event.name?.includes('圓環牛肉湯') ? 'T6024' :
+                    event.name?.includes('修安扁擔豆花') ? 'T6017' :
+                    /度小月(?:擔仔麵)?/.test(event.name || '') ? 'T6020' :
+                    event.number
+                  )}"
                   data-time="${escapeHtml(event.time)}"
                   data-station="${escapeHtml(event.station)}"
                   data-menu="${escapeHtml(event.menu)}"
@@ -3418,11 +3423,29 @@ function renderItinerary(day) {
       button.addEventListener('click', () => renderItinerary(button.dataset.day));
     });
 
+    function resolveItineraryGourmetId(button){
+      const rawNumber = String(button?.dataset?.number || '').trim();
+      if(/^T\d{4}$/.test(rawNumber)) return rawNumber;
+
+      // Definitive fallback for confirmed 8/10 gourmet stops.
+      // This intentionally ignores stale Safari/localStorage "予定" values.
+      const name = String(button?.dataset?.name || '').trim();
+      const confirmedByName = [
+        [/圓環牛肉湯/, 'T6024'],
+        [/修安扁擔豆花/, 'T6017'],
+        [/度小月(?:擔仔麵)?/, 'T6020']
+      ];
+      for(const [pattern,id] of confirmedByName){
+        if(pattern.test(name)) return id;
+      }
+      return '';
+    }
+
     timeline.addEventListener('click', event => {
       const button = event.target.closest('.itinerary-detail-btn');
       if (!button) return;
 
-      const number = button.dataset.number || '';
+      const number = resolveItineraryGourmetId(button);
 
       // Gourmet detail has one source of truth: the Gourmet tab card/modal.
       if(/^T\d{4}$/.test(number)){
@@ -3439,7 +3462,8 @@ function renderItinerary(day) {
       }
 
       // Non-gourmet itinerary items keep the itinerary detail modal.
-      document.getElementById('itineraryModalNumber').textContent = button.dataset.number;
+      document.getElementById('itineraryModalNumber').textContent =
+        number || button.dataset.number;
       document.getElementById('itineraryModalName').textContent = button.dataset.name;
       document.getElementById('itineraryModalTime').textContent = button.dataset.time;
       document.getElementById('itineraryModalStation').textContent = button.dataset.station;
