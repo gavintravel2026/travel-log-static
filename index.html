@@ -1788,7 +1788,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 22:25</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 22:35</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -1870,6 +1870,10 @@
       <div class="detail-section">
         <h3>旅程メモ</h3>
         <div class="detail-note" id="itineraryModalNote"></div>
+      </div>
+      <div class="detail-section" id="itineraryGourmetLinksSection" style="display:none">
+        <h3>グルメ詳細</h3>
+        <div class="event-options" id="itineraryGourmetLinks"></div>
       </div>
       <div class="detail-section">
         <h3>自分のメモ</h3>
@@ -3398,6 +3402,35 @@ function renderItinerary(day) {
       document.getElementById('itineraryModalNote').textContent =
         button.dataset.note || button.dataset.name || '';
 
+      const gourmetLinksSection = document.getElementById('itineraryGourmetLinksSection');
+      const gourmetLinks = document.getElementById('itineraryGourmetLinks');
+      const isSecondMarketAggregate =
+        button.dataset.eventKey === '9-1' ||
+        String(button.dataset.name || '').includes('台中第二市場');
+
+      if(gourmetLinksSection && gourmetLinks){
+        if(isSecondMarketAggregate){
+          const secondMarketLinks = [
+            {id:'T2001', name:'山河魯肉飯'},
+            {id:'T2003', name:'顏記肉包'},
+            {id:'T2002', name:'王記菜頭粿糯米腸'}
+          ];
+          gourmetLinks.innerHTML = secondMarketLinks.map(item => `
+            <div class="event-option">
+              <div class="event-option-name">${escapeHtml(item.name)}</div>
+              <div class="event-option-actions">
+                <button type="button" class="small-btn primary itinerary-gourmet-link"
+                  data-food-id="${escapeHtml(item.id)}">グルメ詳細</button>
+              </div>
+            </div>
+          `).join('');
+          gourmetLinksSection.style.display = '';
+        }else{
+          gourmetLinks.innerHTML = '';
+          gourmetLinksSection.style.display = 'none';
+        }
+      }
+
       const itineraryModalMapBtn = document.getElementById('itineraryModalMap');
       if(validHttpUrl(button.dataset.map)){
         itineraryModalMapBtn.href = button.dataset.map;
@@ -3432,6 +3465,23 @@ function renderItinerary(day) {
       itineraryModal.setAttribute('aria-hidden','true');
       document.body.style.overflow = '';
     }
+
+    document.getElementById('itineraryGourmetLinks')?.addEventListener('click', event => {
+      const linkButton = event.target.closest('.itinerary-gourmet-link');
+      if(!linkButton) return;
+      const foodId = linkButton.dataset.foodId || '';
+      if(!/^T\d{4}$/.test(foodId)) return;
+
+      if(typeof renderGourmetCards === 'function') renderGourmetCards();
+      const gourmetCard =
+        document.querySelector(`.food-card[data-food-id="${CSS.escape(foodId)}"]`);
+      const detailButton = gourmetCard?.querySelector('.detail-btn');
+
+      if(detailButton){
+        closeItineraryModal();
+        detailButton.click();
+      }
+    });
 
     document.getElementById('closeItineraryModal')?.addEventListener('click', closeItineraryModal);
     itineraryModal?.addEventListener('click', event => {
