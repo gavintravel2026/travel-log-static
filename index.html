@@ -461,6 +461,21 @@
       color:var(--text);font-size:17px
     }
     .search-box input::placeholder{color:#77847d}
+    .gourmet-quick-row{
+      display:flex;gap:9px;overflow-x:auto;padding:0 0 10px;margin-top:-2px;
+      scrollbar-width:none
+    }
+    .gourmet-quick-row::-webkit-scrollbar{display:none}
+    .gourmet-quick-btn{
+      flex:0 0 auto;min-height:42px;padding:0 15px;
+      border-radius:999px;border:1px solid rgba(255,255,255,.10);
+      background:#13291f;color:#aab8b0;
+      font-size:14px;font-weight:900
+    }
+    .gourmet-quick-btn.active{
+      background:rgba(241,195,108,.16);color:var(--gold);
+      border-color:rgba(241,195,108,.42)
+    }
     .filter-row{
       display:flex;gap:9px;overflow-x:auto;padding:0 0 8px;
       scrollbar-width:none
@@ -1564,6 +1579,12 @@
         <input id="foodSearch" type="search" placeholder="店名・地域・料理・出所・T番号で検索" autocomplete="off">
       </label>
 
+      <div class="gourmet-quick-row" aria-label="グルメ絞り込み">
+        <button type="button" class="gourmet-quick-btn" data-quick-filter="visited">✓ 訪問済</button>
+        <button type="button" class="gourmet-quick-btn" data-quick-filter="unvisited">○ 未訪問</button>
+        <button type="button" class="gourmet-quick-btn" data-quick-filter="bib">★ ビブグルマン</button>
+      </div>
+
       <div class="food-stats">
         <span class="stat-chip">表示 <strong id="visibleFoodCount">0</strong>件</span>
         <span class="stat-chip">お気に入り <strong id="favoriteFoodCount">0</strong>件</span>
@@ -1767,7 +1788,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 21:11</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 21:57</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -2119,8 +2140,11 @@
     const searchInput = document.getElementById('foodSearch');
     let foodCards = [];
     const filterButtons = [...document.querySelectorAll('.filter-btn')];
+    const quickFilterButtons = [...document.querySelectorAll('.gourmet-quick-btn')];
     const emptyResult = document.getElementById('emptyResult');
     let activeFilter = 'all';
+    let activeVisitFilter = '';
+    let bibGourmandOnly = false;
 
     const foodModal = document.getElementById('foodModal');
     const modalNumber = document.getElementById('modalNumber');
@@ -2484,12 +2508,23 @@
 
       foodCards.forEach(card => {
         const foodId = card.dataset.foodId || card.querySelector('.food-number')?.textContent.trim();
+        const item = gourmetData.find(x => x.id === foodId);
+        const visited = item ? isGourmetVisited(item) : false;
+        const visitLabel = visited ? '訪問済 訪問済み' : '未訪問';
+        const searchText = `${card.dataset.search || ''} ${visitLabel}`.toLowerCase();
         const regionMatch =
           activeFilter === 'all' ||
           card.dataset.region === activeFilter ||
           (activeFilter === 'favorites' && favoriteFoods.has(foodId));
-        const keywordMatch = !keyword || card.dataset.search.toLowerCase().includes(keyword);
-        const visible = regionMatch && keywordMatch;
+        const visitMatch =
+          !activeVisitFilter ||
+          (activeVisitFilter === 'visited' && visited) ||
+          (activeVisitFilter === 'unvisited' && !visited);
+        const bibMatch =
+          !bibGourmandOnly ||
+          searchText.includes('ビブグルマン');
+        const keywordMatch = !keyword || searchText.includes(keyword);
+        const visible = regionMatch && visitMatch && bibMatch && keywordMatch;
         card.style.display = visible ? '' : 'none';
         if(visible) visibleCount++;
       });
@@ -2508,6 +2543,23 @@
         filterButtons.forEach(item => item.classList.remove('active'));
         button.classList.add('active');
         activeFilter = button.dataset.filter;
+        updateFoodList();
+      });
+    });
+
+    quickFilterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.dataset.quickFilter || '';
+        if(filter === 'bib'){
+          bibGourmandOnly = !bibGourmandOnly;
+          button.classList.toggle('active', bibGourmandOnly);
+        }else{
+          const nextVisitFilter = activeVisitFilter === filter ? '' : filter;
+          activeVisitFilter = nextVisitFilter;
+          quickFilterButtons
+            .filter(item => item.dataset.quickFilter === 'visited' || item.dataset.quickFilter === 'unvisited')
+            .forEach(item => item.classList.toggle('active', item.dataset.quickFilter === activeVisitFilter));
+        }
         updateFoodList();
       });
     });
