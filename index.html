@@ -1788,7 +1788,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 22:35</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 22:43</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -2693,6 +2693,51 @@
           }
         }
         // Persist migrated state immediately so refresh does not resurrect the old placement.
+        try{ persistItinerary(); }catch(_){}
+      }
+
+      // Gourmet-link migration for 8/10:
+      // Older Safari localStorage may retain _manualOverride=true and restore these
+      // three confirmed food stops as generic "予定", breaking itinerary -> gourmet links.
+      // Force only the link/detail fields back to the authoritative itinerary master while
+      // preserving user-edited time/name/meta and itinerary ordering.
+      {
+        const forcedGourmetLinks = {
+          '10:0': 'T6024', // 圓環牛肉湯
+          '10:1': 'T6017', // 修安扁擔豆花
+          '10:2': 'T6020'  // 度小月擔仔麵
+        };
+
+        const day10 = itineraryData['10']?.events || [];
+        const originalDay10 = originalItineraryData['10']?.events || [];
+
+        day10.forEach(event => {
+          const forcedNumber = forcedGourmetLinks[event?._sourceKey];
+          if(!forcedNumber) return;
+
+          const original = originalDay10.find(item => item?._sourceKey === event._sourceKey);
+          event.type = 'food';
+          event.number = forcedNumber;
+          event.secondary = 'グルメブック';
+          event.secondaryUrl = '#gourmet';
+
+          // Restore the authoritative map/detail fields where available.
+          if(original){
+            event.primary = original.primary || event.primary;
+            event.primaryUrl = original.primaryUrl || '';
+            event.station = original.station || '';
+            event.menu = original.menu || '';
+            event.budget = original.budget || '—';
+            event.note = original.note || event.note || '';
+            event.map = original.map || '';
+            event.walk = original.walk || '';
+          }
+
+          // This migration itself is now authoritative; do not let the old generic
+          // manual-override state turn it back into "予定" on the next reload.
+          delete event._manualOverride;
+        });
+
         try{ persistItinerary(); }catch(_){}
       }
 
