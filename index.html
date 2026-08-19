@@ -1788,7 +1788,7 @@
             <h2 id="myPageTitle">マイページ</h2>
             <p>travel log</p>
             <div class="mypage-update-info">
-              <div>アプリ更新：<span id="appUpdatedAt">2026/08/18 23:07</span></div>
+              <div>アプリ更新：<span id="appUpdatedAt">2026/08/19 22:10</span></div>
               <div>データ最終更新：<span id="dataUpdatedAt">—</span></div>
             </div>
           </div>
@@ -4704,13 +4704,64 @@ function renderItinerary(day) {
     // Full-day Google Maps route
 
     // Share/copy selected day
+    // The shared text is for another person to understand the day's itinerary.
+    // Internal app bookkeeping (master labels, T IDs, photo-record wording, prices, etc.)
+    // is intentionally excluded.
+    function cleanShareSubtitle(value){
+      return String(value || '')
+        .replace(/（最終実績）/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+    }
+
+    function cleanShareEventName(value){
+      let text = String(value || '').trim();
+
+      // Internal identifiers / record-only labels.
+      text = text
+        .replace(/（T\d{4}）/g, '')
+        .replace(/写真記録の/g, '')
+        .replace(/最終実績マスター/g, '')
+        .replace(/最終実績/g, '');
+
+      // Expense details belong in the gourmet detail, not in a shared day plan.
+      // Keep the dish names and quantities where they are useful.
+      text = text
+        .replace(/\s*[＋+]サービス料.*$/g, '')
+        .replace(/[。．]?\s*小計.*$/g, '')
+        .replace(/\s*NT\$[\d,]+(?:\.\d+)?/g, '');
+
+      // Visit-log precision is unnecessary in a shareable schedule.
+      text = text.replace(/へ。\s*\d{1,2}:\d{2}頃注文、\s*\d{1,2}:\d{2}頃食事終了/g, '');
+
+      // Clean punctuation left behind after removing internal/price text.
+      text = text
+        .replace(/\s*／\s*(?=／|$)/g, '')
+        .replace(/／{2,}/g, '／')
+        .replace(/\s*。\s*$/g, '')
+        .replace(/[:：]\s*$/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+
+      return text;
+    }
+
     function selectedDayText(){
       const data = itineraryData[currentSelectedDay];
       if(!data) return '';
+      const rows = (data.events || [])
+        .map(event => {
+          const name = cleanShareEventName(event.name);
+          if(!name) return '';
+          const time = String(event.time || '').trim();
+          return time ? `${time}　${name}` : name;
+        })
+        .filter(Boolean);
+
       return [
-        `台湾2026｜${data.subtitle}`,
+        `台湾2026｜${cleanShareSubtitle(data.subtitle)}`,
         '',
-        ...data.events.map(event => `${event.time}　${event.name}（${event.meta}）`)
+        ...rows
       ].join('\n');
     }
 
